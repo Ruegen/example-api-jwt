@@ -1,5 +1,17 @@
 class AuthController < ApplicationController
+
   def register
+    user = User.new(login_params)
+
+    if user.save!
+      create_jwt_cookie user
+      response.status = 204
+    end
+
+    rescue => e
+      response.status = 422
+      puts e.message
+      render json: { error: e.message }
   end
 
   def login
