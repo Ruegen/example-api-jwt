@@ -10,7 +10,6 @@ class AuthController < ApplicationController
 
     rescue => e
       response.status = 422
-      puts e.message
       render json: { error: e.message }
   end
 
