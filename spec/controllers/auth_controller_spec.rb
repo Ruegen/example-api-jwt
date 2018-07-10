@@ -7,6 +7,20 @@ RSpec.describe AuthController, type: :controller do
   let(:secret) { ENV.fetch('JWT_SECRET')}
   let(:email) {'ruegen@example.com'}
 
+
+  describe "#jwt_cookie" do 
+
+    it "generates a jwt in hash" do
+      user = build(:user)
+      controller = AuthController.new
+      expected = "eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InJ1ZWdlbkBleGFtcGxlLmNvbSJ9.AeAnIwMaj1GHrB7ZLP985gHLkoosQlL5gayPkAgGcwI"
+      cookie = controller.instance_eval{jwt_cookie(user)}
+      result = cookie[:value]
+      expect(result).to eq(expected)
+    end
+
+  end
+
   describe "#register" do
     
     context "user hasn't registered correctly" do 
@@ -77,7 +91,6 @@ RSpec.describe AuthController, type: :controller do
     end
 
     end
-
 
     it "creates jwt in cookie" do
 
