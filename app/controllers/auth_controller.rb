@@ -21,10 +21,16 @@ class AuthController < ApplicationController
     user = User.find_for_authentication(email_param)
     password = login_params[:password]
 
+    if user.nil?
+      render json: { error: 'Not Found' }, status: 400
+    end
+
     if user.valid_password? password
       cookie = jwt_cookie user
       response.set_cookie :access_token, cookie
       response.status = 204
+    else
+      render json: { error: 'Password invalid' }, status: 422
     end
 
   rescue => e
