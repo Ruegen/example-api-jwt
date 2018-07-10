@@ -1,5 +1,5 @@
 class AuthController < ApplicationController
-  include JsonWebTokens
+  include JsonWebToken
   
   def register
     user = User.new(login_params)

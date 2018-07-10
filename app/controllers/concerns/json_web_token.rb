@@ -1,4 +1,5 @@
-module JsonWebTokens
+require 'jwt'
+module JsonWebToken
 
     def jwt_cookie user
         secret = ENV.fetch('JWT_SECRET')
