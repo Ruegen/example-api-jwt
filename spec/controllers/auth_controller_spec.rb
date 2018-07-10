@@ -37,7 +37,7 @@ RSpec.describe AuthController, type: :controller do
 
         access_token = response.cookies['access_token']
 
-        expect(response).to have_http_status(422)
+        expect(response).to have_http_status(500)
         expect(access_token).to eq(nil)
 
       end
@@ -86,7 +86,7 @@ RSpec.describe AuthController, type: :controller do
       }
       access_token = response.cookies['access_token']
 
-      expect(response).to have_http_status(422)
+      expect(response).to have_http_status(500)
       expect(access_token).to eq(nil)
     end
 
