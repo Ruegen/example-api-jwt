@@ -10,9 +10,9 @@ class AuthController < ApplicationController
       response.status = 204
     end
 
-    rescue => e
-      response.status = 422
-      render json: { error: e.message }
+    # rescue => e
+    #   response.status = 422
+    #   render json: { error: e.message }
   end
 
   def login
@@ -22,7 +22,9 @@ class AuthController < ApplicationController
     password = login_params[:password]
 
     if user.nil?
-      render json: { error: 'Not Found' }, status: 400
+      respond_to do |format|
+        format.json { render json: {error: 'Not Found'}, status: 400 }
+      end
     end
 
     if user.valid_password? password
@@ -33,9 +35,9 @@ class AuthController < ApplicationController
       render json: { error: 'Password invalid' }, status: 422
     end
 
-  rescue => e
-    response.status = 422
-    render json: { error: e.message }
+  # rescue => e
+  #   response.status = 422
+  #   render json: { error: e.message }
   end
 
   private 

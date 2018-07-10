@@ -1,0 +1,20 @@
+POST http://localhost:3000/auth/login
+Content-Type: application/json
+
+{
+    "email": "ruegen@example.com",
+    "password": "geeneggsandham"
+}
+
+###
+POST http://localhost:3000/auth/register
+Content-Type: application/json
+
+{
+    "email": "ruegen@example.com",
+    "password": "greeneggsandham"
+}
+
+###
+GET http://localhost:3000/cars
+Cookie: access_token=eyJhbGciOiJIUzI1NiJ9.eyJlbWFpbCI6InJ1ZWdlbkBleGFtcGxlLmNvbSJ9.F9htJIaMJVoTnokxWlGhtGRtredU5x7uVgbqhBNrgu8; domain=localhost:3000; expires=Fri, 06 Jul 2018 03:36:04 -0000; HttpOnly
