@@ -4,7 +4,8 @@ class AuthController < ApplicationController
     user = User.new(login_params)
 
     if user.save!
-      create_jwt_cookie user
+      cookie = jwt_cookie user
+      response.set_cookie :access_token, cookie
       response.status = 204
     end
 
@@ -20,7 +21,8 @@ class AuthController < ApplicationController
     password = login_params[:password]
 
     if user.valid_password? password
-      create_jwt_cookie user
+      cookie = jwt_cookie user
+      response.set_cookie :access_token, cookie
       response.status = 204
     end
 
@@ -34,7 +36,7 @@ class AuthController < ApplicationController
     params.require(:auth).permit(:email, :password)
   end
 
-  def create_jwt_cookie user
+  def jwt_cookie user
     secret = ENV.fetch('JWT_SECRET')
 
     payload = {
@@ -43,7 +45,7 @@ class AuthController < ApplicationController
 
     token = JWT.encode(payload, secret)
 
-    response.set_cookie :access_token, {
+    return {
       value: token,
       expires: 30.minutes.from_now,
       domain: 'localhost:3000',
