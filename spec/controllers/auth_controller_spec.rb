@@ -25,21 +25,25 @@ RSpec.describe AuthController, type: :controller do
     
     context "user hasn't registered correctly" do 
 
-      it "no token" do
-        user = build(:user)
-
+      it "will fail to register user without email" do
         post :register, params: {
           auth: {
             email: '', 
             password: ''
-          }  
+          }
         }
+        expect(response).to have_http_status(422)
+      end
 
+      it "will not generate a jwt token when it fails" do 
+        post :register, params: {
+          auth: {
+            email: '', 
+            password: ''
+          }
+        }
         access_token = response.cookies['access_token']
-
-        expect(response).to have_http_status(500)
         expect(access_token).to eq(nil)
-
       end
 
     end
@@ -86,7 +90,7 @@ RSpec.describe AuthController, type: :controller do
       }
       access_token = response.cookies['access_token']
 
-      expect(response).to have_http_status(500)
+      expect(response).to have_http_status(400)
       expect(access_token).to eq(nil)
     end
 

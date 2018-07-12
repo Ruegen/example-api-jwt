@@ -4,10 +4,13 @@ class AuthController < ApplicationController
   def register
     user = User.new(login_params)
 
-    if user.save!
+    if user.save
       cookie = jwt_cookie user
       response.set_cookie :access_token, cookie
       response.status = 204
+    else
+      response.status = 422
+      return render json: { error: user.errors.full_messages }
     end
 
   end
@@ -19,9 +22,8 @@ class AuthController < ApplicationController
     password = login_params[:password]
 
     if user.nil?
-      respond_to do |format|
-        format.json { render json: { error: 'Not Found' }, status: 400 }
-      end
+      response.status = 400
+      return render json: { error: 'Not Found' }
     end
 
     if user.valid_password? password
@@ -29,7 +31,8 @@ class AuthController < ApplicationController
       response.set_cookie :access_token, cookie
       response.status = 204
     else
-      render json: { error: 'Password invalid' }, status: 422
+      response.status = 422
+      render json: { error: 'Password invalid' }
     end
     
   end
